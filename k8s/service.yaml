@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: halopsa-adapter
+  namespace: monitoring
+  labels:
+    app: halopsa-adapter
+spec:
+  type: ClusterIP
+  selector:
+    app: halopsa-adapter
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP

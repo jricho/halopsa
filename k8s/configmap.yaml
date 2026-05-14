@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: halopsa-adapter-config
+  namespace: monitoring
+data:
+  halopsa_url: "https://876cec92-f11e-46a8-b4e4-d6ac4f346b41.mock.pstmn.io/api/Tickets"

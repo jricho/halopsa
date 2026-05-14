@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: halopsa-adapter
+  namespace: monitoring
+  labels:
+    app: halopsa-adapter
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: halopsa-adapter
+  template:
+    metadata:
+      labels:
+        app: halopsa-adapter
+    spec:
+      containers:
+        - name: halopsa-adapter
+          image: halopsa-adapter:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: HALOPSA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: halopsa-adapter-config
+                  key: halopsa_url
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
